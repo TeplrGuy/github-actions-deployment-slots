@@ -37,9 +37,9 @@
 
     <h2>Hello World!</h2>
 
-    <img src="https://github.com/TeplrGuy/github-actions-deployment-slots/blob/main/images/CLO18_programmingCode_001.jpg" alt="Image 1" style="width:100px;height:100px;">
-    <img src="https://github.com/TeplrGuy/github-actions-deployment-slots/blob/main/images/CLO17_azure_001.jpg" alt="Image 2" style="width:100px;height:100px;">
-    <img src="https://github.com/TeplrGuy/github-actions-deployment-slots/blob/main/images/CLO19_azureKinectDK_017.jpg" alt="Image 3" style="width:100px;height:100px;">
+    <img src="https://github.com/TeplrGuy/github-actions-deployment-slots/blob/main/images/CLO18_programmingCode_001.jpg?raw=true" alt="Image 1" style="width:100px;height:100px;">
+    <img src="https://github.com/TeplrGuy/github-actions-deployment-slots/blob/main/images/CLO17_azure_001.jpg?raw=true" alt="Image 2" style="width:100px;height:100px;">
+    <img src="https://github.com/TeplrGuy/github-actions-deployment-slots/blob/main/images/CLO19_azureKinectDK_017.jpg?raw=true" alt="Image 3" style="width:100px;height:100px;">
 </body>
 
 </html>
