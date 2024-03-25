@@ -45,9 +45,7 @@ jobs:
     - name: Log into Azure CLI with service principal
       uses: azure/login@v1.1
       with:
-        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FDAB92AD5E464CD8AF1E65372703C5E3 }}
-        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_931622C22D014F9C8FAE1E6479600DBC }}
-        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E038ACC9127C497D924BF3499970D5EF }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
@@ -74,9 +72,7 @@ jobs:
     - name: Log into Azure CLI with service principal
       uses: azure/login@v1.1
       with:
-        client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FDAB92AD5E464CD8AF1E65372703C5E3 }}
-        tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_931622C22D014F9C8FAE1E6479600DBC }}
-        subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E038ACC9127C497D924BF3499970D5EF }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Swap slots
       run: az webapp deployment slot swap -s ${{ env.SLOT_NAME }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }}
