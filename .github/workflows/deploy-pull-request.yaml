@@ -72,7 +72,7 @@ jobs:
     - name: Get app settings from production
       id: get-app-settings
       run: |
-        echo "::set-output name=app-settings::$(az webapp config appsettings list --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query "[?name!='ApplicationInsightsAgent_EXTENSION_VERSION'].{name:name, value:value}" -o tsv)"
+        echo "::set-output name=app-settings::$(az webapp config appsettings list --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query "[].{name:name, value:value}" -o tsv)"
 
     - name: Set app settings in PR slot
       run: |
