@@ -68,7 +68,21 @@ jobs:
       uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
+
+    - name: Get app settings from production
+      id: get-app-settings
+      run: |
+        echo "::set-output name=app-settings::$(az webapp config appsettings list --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query "[].{name:name, value:value}" -o tsv)"
+
+    - name: Set app settings in PR slot
+      run: |
+        for setting in ${{ steps.get-app-settings.outputs.app-settings }}
+        do
+          name=$(echo $setting | cut -f1)
+          value=$(echo $setting | cut -f2)
+          az webapp config appsettings set --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --settings "$name=$value"
+        done
+
     - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v3
       id: deploy-to-webapp
@@ -89,4 +103,3 @@ jobs:
           > *This is an automated message.*
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         repo-token-user-login: 'github-actions[bot]'
-   
