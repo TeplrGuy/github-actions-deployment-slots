@@ -74,14 +74,14 @@ jobs:
       run: |
         echo "::set-output name=app-settings::$(az webapp config appsettings list --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query "[].{name:name, value:value}" -o tsv)"
 
-    - name: Set app settings in PR slot
-      run: |
-        for setting in ${{ steps.get-app-settings.outputs.app-settings }}
-        do
-          name=$(echo $setting | cut -f1)
-          value=$(echo $setting | cut -f2)
-          az webapp config appsettings set --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --settings "$name=\"$value\""
-        done
+    - name: Set app settings in PR slot  
+      env:  
+        APP_SETTINGS: ${{ steps.get-app-settings.outputs.app-settings }}  
+      run: |  
+        while IFS= read -r setting; do  
+          az webapp config appsettings set --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --settings "$setting"  
+        done <<< "$APP_SETTINGS"  
+  
 
     - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v3
