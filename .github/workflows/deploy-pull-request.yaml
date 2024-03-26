@@ -80,7 +80,7 @@ jobs:
         do
           name=$(echo $setting | cut -f1)
           value=$(echo $setting | cut -f2)
-          az webapp config appsettings set --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --settings "$name=$value"
+          az webapp config appsettings set --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --settings "$name=\"$value\""
         done
 
     - name: Deploy to slot on staging site
