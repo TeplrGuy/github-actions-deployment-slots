@@ -45,8 +45,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Create slot on staging site
-      run: az webapp deployment slot create --resource-group $RESOURCE_GROUP  --name $WEBAPP_NAME --slot $SLOT_NAME
+    #- name: Create slot on staging site
+    #  run: az webapp deployment slot create --resource-group $RESOURCE_GROUP  --name $WEBAPP_NAME --slot $SLOT_NAME
+
+    - name: Clone production slot to PR slot
+      run: |
+        az webapp deployment slot create --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --configuration-source $WEBAPP_NAME
+
 
   deploy:
     name: Deploy to test env
@@ -67,22 +72,8 @@ jobs:
     - name: Log into Azure CLI with service principal
       uses: azure/login@v1.1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}    
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - name: Get app settings from production
-      id: get-app-settings
-      run: |
-        echo "::set-output name=app-settings::$(az webapp config appsettings list --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --query "[].{name:name, value:value}" -o tsv)"
-
-    - name: Set app settings in PR slot  
-      env:  
-        APP_SETTINGS: ${{ steps.get-app-settings.outputs.app-settings }}  
-      run: |  
-        while IFS= read -r setting; do  
-          az webapp config appsettings set --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --settings "$setting"  
-        done <<< "$APP_SETTINGS"  
-  
-
     - name: Deploy to slot on staging site
       uses: azure/webapps-deploy@v3
       id: deploy-to-webapp
@@ -103,3 +94,4 @@ jobs:
           > *This is an automated message.*
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         repo-token-user-login: 'github-actions[bot]'
+   
