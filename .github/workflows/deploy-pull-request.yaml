@@ -45,8 +45,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Create slot on staging site
-      run: az webapp deployment slot create --resource-group $RESOURCE_GROUP  --name $WEBAPP_NAME --slot $SLOT_NAME
+    #- name: Create slot on staging site
+    #  run: az webapp deployment slot create --resource-group $RESOURCE_GROUP  --name $WEBAPP_NAME --slot $SLOT_NAME
+
+    - name: Clone production slot to PR slot
+      run: |
+        az webapp deployment slot create --resource-group $RESOURCE_GROUP --name $WEBAPP_NAME --slot $SLOT_NAME --configuration-source $WEBAPP_NAME
+
 
   deploy:
     name: Deploy to test env
